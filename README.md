@@ -1,2 +1,2 @@
-# comarts
-1D radiative transfer simulation package for non-LTE comae complex
+# ComaRT 
+1D radiative transfer package for non-LTE comae/ejecta plume
