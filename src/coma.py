@@ -21,7 +21,7 @@ class ComaGrid:
     Shape: (nprops, nx) for efficient Disort computation
     """
     
-    def __init__(self, nx, nlevel=2, density=None, velocity=None, temperature=None):
+    def __init__(self, nx, nlevel=2, density=None, velocity=None, temperature=None, electron_density=None, electron_temperature=None):
         """
         Initialize the coma property grid.
         
@@ -31,12 +31,16 @@ class ComaGrid:
             density: Optional initial density array
             velocity: Optional initial velocity array
             temperature: Optional initial temperature array
+            electron_density: Optional initial electron density array
+            electron_temperature: Optional initial electron temperature array
         """
 
         self.nx = nx
         self.nlevel = nlevel  # Number of energy levels (for level population ratios)
-        self.nprops = NPROPS + nlevel  # Number of properties per grid point (density, velocity, temperature, level0, .. level n-1)
-                
+        self.nprops = NPROPS + nlevel  # Number of properties per grid point (density, velocity, temperature, electron density, electron temperature, level0, .. level n-1)
+ 
+        NLEVEL = nlevel  # Set global constant for number of levels, used in other modules like Einstein_Aij
+        
         # Create 1D property array: (nprops, nx)
         # Shape optimized for efficient extension to 3D and Disort computation
         self.props = np.zeros(
@@ -65,6 +69,18 @@ class ComaGrid:
             if len(temperature) != nx:
                 raise ComartError(f"Temperature array size {len(temperature)} does not match nx={nx}")
             self.props[ITEMP, :] = np.asarray(temperature, dtype=np.float64)
+        
+        if electron_density is not None:
+            if len(electron_density) != nx:
+                raise ComartError(f"Electron density array size {len(electron_density)} does not match nx={nx}")
+            self.props[IELE, :] = np.asarray(electron_density, dtype=np.float64)
+
+        if electron_temperature is not None:
+            if len(electron_temperature) != nx:
+                raise ComartError(f"Electron temperature array size {len(electron_temperature)} does not match nx={nx}")
+            self.props[ITE, :] = np.asarray(electron_temperature, dtype=np.float64)
+
+
 
     def init_level_populations(self):
         """ Initialize level populations equally distributed """
@@ -123,6 +139,14 @@ class ComaGrid:
         """Get the temperature array."""
         return self.props[ITEMP, :]
     
+    def get_electron_density(self):
+        """Get the electron density array."""
+        return self.props[IELE, :]
+    
+    def get_electron_temperature(self):
+        """Get the electron temperature array."""
+        return self.props[ITE, :]
+
     def get_level_populations(self):
         """Get the level populations"""
         return self.props[LEV0:, :]

@@ -8,10 +8,11 @@ Plots the resulting profiles from 1 km to 1e6 km with logarithmic spacing.
 import numpy as np
 import matplotlib.pyplot as plt
 from src import ComaGrid
-from src import make_coma_from_arrays
+# from src import make_coma_from_arrays
 from src.profiles.velocity_model import *
 from src.profiles.temperature_model import *
 from src.profiles.density_model import *
+from src.profiles.electron import *
 from src import *
 
 
@@ -50,13 +51,16 @@ temperature = temperature_revesedist(xc, a=7, b=1, T0=T0, r0=2000)
 Q = 1e26            # production rate (molecules/s)
 density = calc_density(Q, xc, velocity, r_h=2.5, model_type='isotropic', photo_dissociation=True)
 
+
+# electron density and temperature profiles
+nelec, telec = electron_Biver1997(Q, r_h=2.5, r=xc, v=velocity, Tkin=temperature, Temax=10000)
+
 # Create ComaGrid with computed profiles
-grid = make_coma_from_arrays(xb, density, velocity, temperature)
+grid = ComaGrid(nx, nlevel=2, density=density, velocity=velocity, temperature=temperature, electron_density=nelec, electron_temperature=telec)
 
-
-# Set grid coordinates
 grid.x = xb
 grid.xc = xc
+
 
 print(f"\nComaGrid created:")
 print(f"  Shape: {grid.props.shape}")
@@ -64,8 +68,9 @@ print(f"  Memory: {grid.nbytes / 1e3:.2f} kB")
 print(f"  Contiguous: {grid.is_contiguous}")
 
 # Create plots
-fig, axes = plt.subplots(3,1, figsize=(4, 10), dpi=300)
+fig, axes = plt.subplots(2,3, figsize=(12, 8), dpi=300)
 
+axes = axes.flatten()
 
 # Velocity plot
 ax = axes[2]
@@ -102,6 +107,27 @@ ax.set_xlabel('Distance (km)')
 ax.set_ylabel('Temperature (K)')
 ax.set_title('Temperature Profile')
 ax.grid(True, alpha=0.3)
+
+
+
+# Electron density plot
+ax = axes[3]
+ax.loglog(xc / 1e3, grid.props[IELE, :])
+ax.set_xscale('log')
+ax.set_xlabel('Distance (km)')
+ax.set_ylabel('Electron Density (m$^{-3}$)')
+ax.set_title('Electron Density Profile')
+ax.grid(True, alpha=0.3)
+
+# Electron temperature plot
+ax = axes[4]
+ax.loglog(xc / 1e3, grid.props[ITE, :])
+ax.set_xscale('log')
+ax.set_xlabel('Distance (km)')
+ax.set_ylabel('Electron Temperature (K)')
+ax.set_title('Electron Temperature Profile')
+ax.grid(True, alpha=0.3)    
+
 
 
 plt.tight_layout()
