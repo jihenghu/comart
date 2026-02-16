@@ -56,9 +56,9 @@ GFACTORS={
 # Predefined tables for common molecules/atoms
 ORTHO_H2O_COEFFS_TABLE = {
     # ortho-H2O molecule transitions (Zakharov et al. 2007)
-    # (nu_ij in Hz, A_ij in s^-1, G_ij in s^-1, σ_ij in m^2)
-    (J110, J101): (556.936E9, 3.456E-3, 1.423E-5, 2.924E-18),       # Level 1 -> 0
-    (J101, J110): (556.936E9,       0., 1.654E-5,        0.),       # Level 0 -> 1
+    # (nu_ij in    Hz,        A_ij in s^-1,   G_ij in s^-1,  σ_ij in m^2)
+    (J110, J101): (5.56936E11, 3.456E-3, 1.423E-5, 2.924E-18),       # Level 1 -> 0
+    (J101, J110): (5.56936E11,       0., 1.654E-5,        0.),       # Level 0 -> 1
 }
 
 

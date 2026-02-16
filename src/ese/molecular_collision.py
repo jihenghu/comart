@@ -63,7 +63,7 @@ def Einstein_Cm_ij(sigma_ij, n_gas, temperature):
         temperature: Gas temperature (K)
     
     Returns:
-        Collision coefficient Cm (m^3 s^-1)
+        Collision coefficient Cm (s^-1)
     
     Raises:
         ComartError: If inputs are invalid

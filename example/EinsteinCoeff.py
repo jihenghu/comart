@@ -18,11 +18,6 @@ from src import Einstein_Ce_ij
 from src import Einstein_Cm_ij
 
 
-
-grid = ComaGrid(100, nlevel=2)
-
-
-
 print("=" * 70)
 print("Einstein Coefficients for Molecular Transitions")
 print("=" * 70)
@@ -108,7 +103,7 @@ try:
     Ce_ij = Einstein_Ce_ij(from_level, to_level, n_e, T_e)
     
     print(f"\nElectron-molecule collision rate:")
-    print(f"  Transition: Level {from_level} <-> Level {to_level}")
+    print(f"  Transition: Level {from_level} -> Level {to_level}")
     print(f"  Electron density: {n_e:.2e} m^-3")
     print(f"  Electron temperature: {T_e} K")
     print(f"  Ce_ij (excitation rate coeff): {Ce_ij:.3e} m^-3 s^-1")
@@ -138,7 +133,7 @@ try:
     Ce_ij = Einstein_Ce_ij(from_level, to_level, n_e, T_e)
     
     print(f"\nElectron-molecule collision rate:")
-    print(f"  Transition: Level {from_level} <-> Level {to_level}")
+    print(f"  Transition: Level {from_level} -> Level {to_level}")
     print(f"  Electron density: {n_e:.2e} m^-3")
     print(f"  Electron temperature: {T_e} K")
     print(f"  Ce_ij (excitation rate coeff): {Ce_ij:.3e} m^-3 s^-1")

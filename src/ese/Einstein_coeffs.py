@@ -59,17 +59,17 @@ def EinsteinCoeffs(i, j, r_h=1.0, species='ortho-H2O'):
 
     # B12 and B21 can be computed from A_ij using Einstein relations
 
-    Fv = 2 * PLANKC * (nu_ij**3) / (LIGHTSPEED**2)  # Spectral energy density of the radiation field at frequency nu_ij (simplified as blackbody radiation)
+    # Fv = 2 * PLANKC * (nu_ij**3) / (LIGHTSPEED**2)  # Spectral energy density of the radiation field at frequency nu_ij (simplified as blackbody radiation)
 
     if i>j: # then, Aij is nonzero, downward transition, and we can compute both B_ij and B_ji
         # Downward transition
-        B_ij = A_ij / Fv  # Einstein B coefficient for stimulated emission
-        B_ji = B_ij * (2 * GFACTORS[i] + 1) / (2 * GFACTORS[j] + 1)  # Einstein B coefficient for absorption
+        B_ij = A_ij * LIGHTSPEED**2 / (2.0 * PLANKC * nu_ij**3)  # Einstein B coefficient for stimulated emission
+        B_ji = B_ij * GFACTORS[i]  / GFACTORS[j]  # Einstein B coefficient for absorption
 
     else: # then, Aij is zero, upward transition, and we can only compute B_ij from B_ji using Einstein relations 
         # Upward transition
-        B_ji = A_ji / Fv  # Einstein B coefficient for stimulated emission (from downward transition)
-        B_ij = B_ji * (2 * GFACTORS[j] + 1) / (2 * GFACTORS[i] + 1)  # Einstein B coefficient for absorption (from downward transition)
+        B_ji = A_ji * LIGHTSPEED**2 / (2.0 * PLANKC * nu_ij**3)  # Einstein B coefficient for stimulated emission (from downward transition)
+        B_ij = B_ji * GFACTORS[j] / GFACTORS[i]  # Einstein B coefficient for absorption (from downward transition)
 
     return nu_ij, A_ij, A_ji, B_ij, B_ji, G_ij, G_ji, sigma_ij, sigma_ji
 

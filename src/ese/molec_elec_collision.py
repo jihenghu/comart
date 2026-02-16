@@ -42,6 +42,8 @@ def Einstein_Ce_ij(i,j, ne, te):
             j: to energy level index
             ne: electron number density (m^-3)
             te: electron temperature (K)
+         return:
+            Ce_ij: collisional excitation/de-excitation rate coefficient (s^-1)
         reference:
             Zarkharov, A. M., 2007
 
