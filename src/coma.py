@@ -7,6 +7,7 @@ Properties are stored as the last dimension for memory locality.
 
 import numpy as np
 from src.const import *
+from src import const as CONST
 from src.error import ComartError
 
 
@@ -38,8 +39,6 @@ class ComaGrid:
         self.nx = nx
         self.nlevel = nlevel  # Number of energy levels (for level population ratios)
         self.nprops = NPROPS + nlevel  # Number of properties per grid point (density, velocity, temperature, electron density, electron temperature, level0, .. level n-1)
- 
-        NLEVEL = nlevel  # Set global constant for number of levels, used in other modules like Einstein_Aij
         
         # Create 1D property array: (nprops, nx)
         # Shape optimized for efficient extension to 3D and Disort computation
